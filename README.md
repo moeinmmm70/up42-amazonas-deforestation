@@ -1,3 +1,36 @@
+<p align="center">
+  <img src="./docs/screenshots/banner.webp" alt="Monitoring Amazonas Deforestation banner" width="100%" />
+</p>
+
+<h1 align="center">Monitoring Amazonas Deforestation with UP42 and Sentinel-2</h1>
+
+<p align="center">
+  A compact geospatial workflow for catalog search, STAC-based asset retrieval, and NDVI change detection in the Amazonas region.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python" alt="Python 3.13" />
+  <img src="https://img.shields.io/badge/Geospatial-UP42-0A7B83?style=for-the-badge" alt="UP42" />
+  <img src="https://img.shields.io/badge/Data-Sentinel--2-2E8B57?style=for-the-badge" alt="Sentinel-2" />
+  <img src="https://img.shields.io/badge/Method-NDVI-556B2F?style=for-the-badge" alt="NDVI" />
+  <img src="https://img.shields.io/badge/Status-Portfolio%20Project-8A2BE2?style=for-the-badge" alt="Portfolio Project" />
+</p>
+
+## Quick Navigation
+
+- [Overview](#overview)
+- [What is UP42](#what-is-up42)
+- [Why Sentinel-2](#why-sentinel-2)
+- [Why NDVI](#why-ndvi)
+- [Why STAC](#why-stac)
+- [Repository Structure](#repository-structure)
+- [Workflow Summary](#workflow-summary)
+- [Setup](#setup)
+- [Run the Notebook](#run-the-notebook)
+- [Expected Outputs](#expected-outputs)
+- [Notes and Practical Considerations](#notes-and-practical-considerations)
+- [Author](#author)
+
 # Monitoring Amazonas Deforestation with UP42 and Sentinel-2 🌿🛰️
 
 ## Overview
