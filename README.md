@@ -248,19 +248,7 @@ pip install -r requirements.txt
 
 This project uses a local `.env` file for UP42 credentials.
 
-Create a file called `.env` in the project root:
-
-```bash
-touch .env
-```
-
-Then open it:
-
-```bash
-nano .env
-```
-
-Paste your credentials in this format:
+Create a file called `.env` in the project rootand paste your credentials in this format:
 
 ```bash
 UP42_USERNAME=your_up42_username_here
