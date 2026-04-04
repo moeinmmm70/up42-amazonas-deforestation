@@ -221,21 +221,7 @@ The notebook saves and displays:
 
 ## Setup
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/up42-amazonas-deforestation.git
-cd up42-amazonas-deforestation
-```
-
-### 2. Create and activate a virtual environment
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-### 3. Install dependencies
+### Install dependencies
 
 ```bash
 pip install --upgrade pip
