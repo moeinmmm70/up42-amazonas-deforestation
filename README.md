@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/screenshots/banner.webp" alt="Monitoring Amazonas Deforestation banner" width="100%" />
+  <img src="./docs/screenshots/banner.jpg" alt="Monitoring Amazonas Deforestation banner" width="100%" />
 </p>
 
 <h1 align="center">Monitoring Amazonas Deforestation with UP42 and Sentinel-2</h1>
