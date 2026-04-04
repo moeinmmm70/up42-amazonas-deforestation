@@ -26,7 +26,6 @@
 - [Repository Structure](#repository-structure)
 - [Workflow Summary](#workflow-summary)
 - [Setup](#setup)
-- [Run the Notebook](#run-the-notebook)
 - [Expected Outputs](#expected-outputs)
 - [Notes and Practical Considerations](#notes-and-practical-considerations)
 - [Author](#author)
@@ -274,24 +273,6 @@ Save and exit.
 - Do **not** commit your real `.env` file to GitHub
 - The repository includes `.env.example` as a safe template
 - Make sure `.env` is listed in `.gitignore`
-
----
-
-## Run the Notebook
-
-Start Jupyter Notebook from the project root:
-
-```bash
-jupyter notebook
-```
-
-Then open:
-
-```bash
-notebook/amazonas_deforestation_up42.ipynb
-```
-
-Run the notebook from top to bottom.
 
 ---
 
