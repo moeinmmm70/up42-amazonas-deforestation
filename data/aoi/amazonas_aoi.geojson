@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "amazonas_test_aoi"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-62.30, -3.10],
+          [-62.30, -3.00],
+          [-62.15, -3.00],
+          [-62.15, -3.10],
+          [-62.30, -3.10]
+        ]]
+      }
+    }
+  ]
+}
