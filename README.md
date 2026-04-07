@@ -16,118 +16,32 @@
   <img src="https://img.shields.io/badge/Status-Portfolio%20Project-8A2BE2?style=for-the-badge" alt="Portfolio Project" />
 </p>
 
-## Quick Navigation
-
-- [Overview](#overview)
-- [What is UP42](#what-is-up42)
-- [Why Sentinel-2](#why-sentinel-2)
-- [Why NDVI](#why-ndvi)
-- [Why STAC](#why-stac)
-- [Repository Structure](#repository-structure)
-- [Workflow Summary](#workflow-summary)
-- [Setup](#setup)
-- [Expected Outputs](#expected-outputs)
-- [Notes and Practical Considerations](#notes-and-practical-considerations)
-- [Author](#author)
-
-# Monitoring Amazonas Deforestation with UP42 and Sentinel-2 🌿🛰️
-
 ## Overview
 
-This repository contains a Jupyter Notebook that demonstrates a repeatable geospatial workflow for monitoring potential deforestation in the Amazonas region using **Sentinel-2 imagery** through the **UP42 platform**.
+This repository contains a Jupyter Notebook developed for a Technical Support Engineer challenge. It shows a clear end-to-end workflow for vegetation-change screening:
 
-The notebook was developed as part of a **Technical Support Engineer challenge** and is designed to reflect a realistic customer-support workflow:
+- authenticate with the UP42 SDK
+- search the catalog for Sentinel-2 scenes over an AOI
+- filter results by date range and cloud coverage
+- place and track orders for selected scenes
+- inspect fulfilled outputs through STAC
+- download and extract the original delivery
+- compute NDVI for two timestamps
+- generate an NDVI difference map
 
-1. authenticate with the UP42 API  
-2. define an Area of Interest (AOI) in Amazonas  
-3. search the UP42 catalog for Sentinel-2 imagery  
-4. filter scenes by date range and cloud coverage  
-5. place data orders for selected scenes  
-6. inspect delivered outputs using **STAC**  
-7. download and extract raster files  
-8. compute **NDVI** for two timestamps  
-9. generate an **NDVI difference map** to highlight potential vegetation change  
+The notebook is designed as a compact, readable prototype rather than a production monitoring system.
 
-This project is intentionally compact and readable. The goal is not only to produce a result, but also to make the workflow easy to understand, review, and adapt.
+## Why this project
 
----
+The goal of the exercise was not only to produce a change map, but to demonstrate a realistic customer-support workflow around the UP42 ecosystem:
 
-## What is UP42?
+- data discovery
+- order management
+- STAC-based asset inspection
+- raster-level processing
+- clear troubleshooting logic
 
-[UP42](https://www.up42.com/) is a geospatial platform that provides programmatic access to satellite imagery, geospatial processing, and data management workflows through APIs and SDKs.
-
-In this project, UP42 is used for:
-
-- searching satellite imagery in the catalog
-- ordering selected scenes
-- accessing delivered outputs through STAC-compatible storage
-- supporting a reproducible workflow from discovery to analysis
-
-This notebook focuses on the customer-facing logic of how imagery is discovered, ordered, retrieved, and processed.
-
----
-
-## Why Sentinel-2?
-
-This project uses **Sentinel-2 Level-2A** imagery.
-
-Sentinel-2 is a strong choice for vegetation monitoring because it provides:
-
-- multispectral optical imagery
-- global coverage
-- frequent revisit times
-- 10 m resolution bands for visible and near-infrared analysis
-- a free and well-established dataset for environmental applications
-
-For this notebook, the most important bands are:
-
-- **B04** → Red
-- **B08** → Near Infrared (NIR)
-
-These two bands are used to compute **NDVI**.
-
----
-
-## Why NDVI?
-
-The **Normalized Difference Vegetation Index (NDVI)** is a simple and widely used indicator of vegetation condition.
-
-It is calculated as:
-
-```text
-NDVI = (NIR - Red) / (NIR + Red)
-```
-In practice:
-
-- higher NDVI values often indicate denser or healthier vegetation
-- lower NDVI values may indicate sparse vegetation, bare ground, or disturbed land
-
-To compare two points in time, the notebook also computes:
-
-```text
-NDVI Difference = NDVI(Date 2) - NDVI(Date 1)
-```
-
-This helps highlight areas where vegetation may have decreased or changed over time.
-
----
-
-## Why STAC?
-
-This repository also demonstrates the use of **STAC** (SpatioTemporal Asset Catalog), which is important for working with delivered geospatial assets in a structured way.
-
-In the workflow, STAC is used to:
-
-- find the storage outputs related to placed orders
-- inspect item metadata
-- inspect available assets
-- retrieve the original delivery for local raster analysis
-
-This is a key part of the project because it connects the catalog-ordering stage to the actual downloadable analysis files.
-
----
-
-## Repository Structure
+## Repository structure
 
 ```text
 up42-amazonas-deforestation/
@@ -137,157 +51,114 @@ up42-amazonas-deforestation/
 ├── .env.example
 ├── notebook/
 │   └── amazonas_deforestation_up42.ipynb
-├── src/
-│   └── helpers.py
 ├── data/
 │   ├── aoi/
 │   │   └── amazonas_aoi.geojson
 │   └── downloads/
 ├── outputs/
-│   ├── figures/
-│   └── logs/
+│   └── figures/
 └── docs/
     └── screenshots/
 ```
 
-### Main files
-
-- `notebook/amazonas_deforestation_up42.ipynb`  
-  Main notebook containing the complete workflow
-
-- `data/aoi/amazonas_aoi.geojson`  
-  The AOI polygon used for catalog search and ordering
-
-- `outputs/figures/`  
-  Saved figures such as NDVI maps and the NDVI difference map
-
-- `.env.example`  
-  Template showing how to define local UP42 credentials
-
-- `requirements.txt`  
-  Python dependencies for the project
-
----
-
-## Workflow Summary
-
-The notebook follows these main steps:
+## Workflow summary
 
 ### 1. Authentication
-The UP42 Python SDK is authenticated using credentials stored in a local `.env` file.
+The notebook authenticates with UP42 using credentials stored in a local `.env` file.
 
-### 2. AOI Loading
-A small AOI polygon in Amazonas is loaded from a GeoJSON file.
+### 2. Catalog search
+A small AOI in the Amazonas is loaded from GeoJSON, and the UP42 catalog is searched for Sentinel-2 Level-2A scenes within a defined date range and cloud-coverage threshold.
 
-### 3. Product Discovery
-The notebook inspects the UP42 product glossary, selects the **Sentinel-2** collection, and identifies the **sentinel-2-level-2a** data product.
+### 3. Scene selection
+Two representative scenes are selected for downstream comparison.
 
-### 4. Catalog Search
-The workflow searches for scenes that intersect the AOI and match the selected:
-- date range
-- maximum cloud coverage threshold
+### 4. Order placement and tracking
+Orders are created through the UP42 SDK and tracked until fulfillment.
 
-### 5. Scene Selection
-Two scenes are selected from the filtered search results for two-timestamp comparison.
+### 5. STAC inspection
+Fulfilled outputs are located in storage through the UP42 STAC client, and item metadata and assets are inspected before download.
 
-### 6. Order Placement
-An order is created for each selected scene using the UP42 SDK.
+### 6. Raster processing
+The original deliveries are downloaded, extracted locally, and the red and NIR bands are read with `rasterio`.
 
-### 7. Order Tracking
-The notebook waits until each order is fulfilled.
+### 7. NDVI and change detection
+NDVI is calculated for both timestamps, and an NDVI difference map is created to highlight potential vegetation change.
 
-### 8. STAC Inspection
-The delivered outputs are located in UP42 storage and inspected using STAC.
+## Why Sentinel-2 and NDVI
 
-### 9. Download and Extraction
-The original delivery files are downloaded and extracted locally.
+This project uses Sentinel-2 Level-2A imagery because it is well suited for vegetation analysis and provides the red and near-infrared bands needed for NDVI.
 
-### 10. Raster Processing
-Band 4 (red) and Band 8 (NIR) are located and read using `rasterio`.
+```text
+NDVI = (NIR - Red) / (NIR + Red)
+```
 
-### 11. NDVI Calculation
-NDVI is computed separately for each timestamp.
+The notebook also computes:
 
-### 12. Change Detection
-An NDVI difference map is created to highlight potential vegetation change.
+```text
+NDVI Difference = NDVI(Date 2) - NDVI(Date 1)
+```
 
-### 13. Visualization
-The notebook saves and displays:
-- NDVI for Date 1
-- NDVI for Date 2
-- NDVI difference map
+This is used as a simple screening indicator for possible vegetation change.
 
----
+## Why STAC
+
+A key part of the notebook is the use of STAC to bridge the ordering and analysis steps. STAC is used to:
+
+- locate fulfilled outputs in storage
+- inspect item metadata
+- inspect available assets
+- retrieve the original delivery for local processing
 
 ## Setup
 
-### Install dependencies
+### 1. Install dependencies
 
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
----
+### 2. Create a local `.env` file
 
-## Credentials with `.env` 🔐
-
-This project uses a local `.env` file for UP42 credentials.
-
-Create a file called `.env` in the project rootand paste your credentials in this format:
+Create a file named `.env` in the project root:
 
 ```bash
 UP42_USERNAME=your_up42_username_here
 UP42_PASSWORD=your_up42_password_here
 ```
 
-Save and exit.
+The repository includes `.env.example` as a safe template.
 
-### Important
-- Do **not** commit your real `.env` file to GitHub
-- The repository includes `.env.example` as a safe template
-- Make sure `.env` is listed in `.gitignore`
+## Expected outputs
 
----
+The notebook generates:
 
-## Expected Outputs
-
-The notebook produces:
-
-- a clean table of filtered Sentinel-2 scenes
-- placed and tracked UP42 orders
+- a filtered scene metadata table
 - STAC item and asset inspection output
-- downloaded and extracted raster deliveries
-- NDVI for two timestamps
+- NDVI maps for two timestamps
 - an NDVI difference map
-- saved figure files in `outputs/figures/`
+- saved figures in `outputs/figures/`
 
-Typical figure outputs:
+Typical output files:
 
 - `ndvi_date1.png`
 - `ndvi_date2.png`
 - `ndvi_difference.png`
 
----
+## Notes
 
-## Notes and Practical Considerations
+This repository is a prototype workflow. A production-ready monitoring pipeline would require additional steps such as:
 
-This repository is a **prototype workflow**, not a full production monitoring pipeline.
+- AOI-specific cloud masking
+- more robust scene-quality checks
+- denser temporal analysis
+- stronger handling of seasonal effects and residual atmospheric differences
 
-A few important limitations:
-
-- scene-level cloud filtering does not guarantee cloud-free pixels inside the AOI
-- two-date NDVI differencing is useful as a quick indicator, but changes may also reflect seasonality, water dynamics, or residual atmospheric effects
-- production workflows should add cloud masking, scene-quality checks, and more robust alignment handling
-- some UP42 orders may require prior EULA acceptance in the UP42 Console before order placement can succeed
-
-These limitations are part of real-world geospatial support and are discussed in the notebook.
-
----
+The notebook also notes a practical platform consideration: some orders may require prior EULA acceptance in the UP42 Console before order placement can succeed.
 
 ## Dependencies
 
-Main Python packages used in this repository:
+Main packages used:
 
 - `up42-py`
 - `numpy`
@@ -298,33 +169,8 @@ Main Python packages used in this repository:
 - `geojson`
 - `python-dotenv`
 
----
-
-## Suggested Publishing Checklist ✅
-
-Before publishing the repository:
-
-- make sure the notebook runs from top to bottom
-- confirm `.env` is not committed
-- confirm `.env.example` is included
-- confirm output figures are saved
-- clean up overly noisy debug cells
-- add a few screenshots to `docs/screenshots/` if helpful
-- commit and push the final version
-
----
-
-## License
-
-This repository is shared for demonstration and portfolio purposes.  
-Please review UP42 data usage terms and provider-specific conditions before reusing or extending the workflow with other datasets.
-
----
-
 ## Author
 
 **Moein Mellat**  
-GitHub: [moeinmmm70](https://github.com/moeinmmm70)  
-Email: [moein.mellat@gmail.com](moein.mellat@gmail.com)
-
-Prepared as part of a UP42 Technical Support Engineer challenge.
+GitHub: [moeinmmm70](https://github.com/moeinmmm70)
+Email: [moein.mellat@gmail.com](mailto:moein.mellat@gmail.com)
